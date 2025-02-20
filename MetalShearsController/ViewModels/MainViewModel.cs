@@ -4,12 +4,13 @@ namespace MetalShearsController.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private string _greeting = "Welcome to Avalonia!";
 
     [ObservableProperty]
-    private string status = "System Offline"; 
+    private string status = "Σύστημα Ανενεργό"; 
 
     [ObservableProperty]
-    private string statusColor = "Gray";
+    private string statusColor = "DimGray";    
+    
+    [ObservableProperty]
+    private string requestedTerminalPosition = "0000.0mm";
 }

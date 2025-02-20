@@ -1,5 +1,5 @@
 <UserControl x:Class="MetalShearsController.Views.MainView" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:MetalShearsController.ViewModels" d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="clr-namespace:MetalShearsController.ViewModels" d:DesignHeight="480" d:DesignWidth="800"
              x:DataType="vm:MainViewModel" mc:Ignorable="d">
   <Design.DataContext>
     <!--
@@ -8,26 +8,61 @@
     -->
     <vm:MainViewModel />
   </Design.DataContext>
-  <Grid x:Name="RootGrid">
-    <Grid x:Name="InterfaceGrid" Margin="10,10,10,34" RowDefinitions="*,*" >
+  <Grid x:Name="RootGrid" Background="#2a2928">
+    <Grid x:Name="InterfaceGrid" Margin="10,10,10,34" RowDefinitions="*,*" ColumnDefinitions="2*,*" >
 
-      <Grid x:Name="CuttingTerminalControl" Grid.Row="0" Margin="0,0,0,5">
-
-        <Border Background="Red" CornerRadius="20"/>
+      <Grid x:Name="CuttingTerminalControl" Grid.Row="0" Margin="0,0,5,5" ColumnDefinitions="3*,*" RowDefinitions="4*,3*">
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2" Grid.ColumnSpan="2" />
+        <Grid>
+          <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen" Margin="10,10,0,0" CornerRadius="10" Padding="10">
+            <Grid RowDefinitions="*,5*">
+              <Viewbox Stretch="Uniform" Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,0,0">
+                <TextBlock Text="Θέση τερματικού κοπής" Foreground="DarkGreen" FontWeight="DemiBold" HorizontalAlignment="Right" Grid.Row="0"/>
+              </Viewbox>
+              <Viewbox Stretch="Uniform" Grid.Row="1"  HorizontalAlignment="Left" Margin="5,0,0,0">
+                <TextBlock Text="{Binding RequestedTerminalPosition}" Grid.Row="1" Foreground="Green" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Left" />
+              </Viewbox>
+            </Grid>
+          </Border>
+        </Grid>
+        <Button x:Name="MoveTermBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,10" CornerRadius="10" Grid.Column="1" Grid.Row="1">
+          <TextBlock Text="ΜΕΤΑΦΟΡΑ" Foreground="White" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Button>
       </Grid>
 
-      <Grid x:Name="BladeThicknessControl" Grid.Row="1" Margin="0,5,0,0">
-        <Border Background="Green"  CornerRadius="20"/>
+      <Grid x:Name="BladeThicknessControl" Grid.Row="1" Margin="0,5,5,0">
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
+
       </Grid>
 
-      <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                 Text="{Binding Greeting}" />
+      <Grid x:Name="ZeroControls" Grid.Row="0" Grid.Column="1" Margin="5,0,0,5" RowDefinitions="*,*">
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2"/>
+        <Button x:Name="ZeroTermBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,5" CornerRadius="10">
+          <Grid ColumnDefinitions="*,3*">
+            <Image Grid.Column="0" Source="avares://MetalShearsController/Assets/Images/buttonPlaceholderIcon.png" VerticalAlignment="Center"/>
+            <TextBlock Text="Μηδενισμός Άξονα &#10;Τερματικού κοπής" Foreground="White" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center"/>
+          </Grid>
+        </Button>
+        <Button x:Name="ZeroThicBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,10,10" CornerRadius="10" Grid.Row="1">
+          <Grid ColumnDefinitions="*,3*">
+            <Image Grid.Column="0" Source="avares://MetalShearsController/Assets/Images/buttonPlaceholderIcon.png" VerticalAlignment="Center"/>
+            <TextBlock Text="Μηδενισμός &#10;Αξονα Πάχους" Foreground="White" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center"/>
+          </Grid>
+        </Button>
+      </Grid>
+
+      <Grid x:Name="EtcControls" Grid.Row="1" Grid.Column="1" Margin="5,5,0,0">
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
+        
+      </Grid>
     </Grid>
+
     <DockPanel Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                Background="{Binding StatusColor}">
-      <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+      <TextBlock HorizontalAlignment="Center" FontWeight="DemiBold" Foreground="White" VerticalAlignment="Center"
                  Text="{Binding Status}" />
     </DockPanel>
+
   </Grid>
 
 </UserControl>
