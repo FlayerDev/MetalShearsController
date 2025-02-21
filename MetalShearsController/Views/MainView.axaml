@@ -9,12 +9,13 @@
     <vm:MainViewModel />
   </Design.DataContext>
   <Grid x:Name="RootGrid" Background="#2a2928">
-    <Grid x:Name="InterfaceGrid" Margin="10,10,10,34" RowDefinitions="*,*" ColumnDefinitions="2*,*" >
+
+    <Grid x:Name="InterfaceGrid" Margin="20,20,20,44" RowDefinitions="*,*" ColumnDefinitions="2*,*" >
 
       <Grid x:Name="CuttingTerminalControl" Grid.Row="0" Margin="0,0,5,5" ColumnDefinitions="3*,*" RowDefinitions="4*,3*">
-        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2" Grid.ColumnSpan="2" />
-        <Grid>
-          <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen" Margin="10,10,0,0" CornerRadius="10" Padding="10">
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2" Grid.ColumnSpan="2" />
+        <Grid x:Name="TermPosView">
+          <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen" Margin="10,10,5,5" CornerRadius="10" Padding="10">
             <Grid RowDefinitions="*,5*">
               <Viewbox Stretch="Uniform" Grid.Row="0" HorizontalAlignment="Left" Margin="10,0,0,0">
                 <TextBlock Text="Θέση τερματικού κοπής" Foreground="DarkGreen" FontWeight="DemiBold" HorizontalAlignment="Right" Grid.Row="0"/>
@@ -25,37 +26,69 @@
             </Grid>
           </Border>
         </Grid>
-        <Button x:Name="MoveTermBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,10,10" CornerRadius="10" Grid.Column="1" Grid.Row="1">
-          <TextBlock Text="ΜΕΤΑΦΟΡΑ" Foreground="White" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+        <Grid x:Name="IncrementBttnsControl" Grid.Column="0" Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*" Margin="10,5,5,10">
+          <Button Command="{Binding IncrementRequestedTeminalPositionCommand}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" CornerRadius="10,0,0,10" Grid.Column="0">
+             <TextBlock Text="-100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="1">
+             <TextBlock Text="-10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="2">
+             <TextBlock Text="-0.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>          
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="3">
+             <TextBlock Text="+0.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>          
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="4">
+             <TextBlock Text="+10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>          
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" CornerRadius="0,10,10,0" Grid.Column="5">
+             <TextBlock Text="100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+        </Grid>
+
+        <Button x:Name="MoveTermBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,10,10" CornerRadius="10" Grid.Column="1" Grid.Row="1">
+          <TextBlock Text="ΜΕΤΑΦΟΡΑ" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Button>
       </Grid>
 
+
+
       <Grid x:Name="BladeThicknessControl" Grid.Row="1" Margin="0,5,5,0">
-        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
 
       </Grid>
 
+
+
       <Grid x:Name="ZeroControls" Grid.Row="0" Grid.Column="1" Margin="5,0,0,5" RowDefinitions="*,*">
-        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2"/>
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2"/>
         <Button x:Name="ZeroTermBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,10,10,5" CornerRadius="10">
           <Grid ColumnDefinitions="*,3*">
-            <Image Grid.Column="0" Source="avares://MetalShearsController/Assets/Images/buttonPlaceholderIcon.png" VerticalAlignment="Center"/>
+            <Image Grid.Column="0" Margin="7" Source="avares://MetalShearsController/Assets/Images/termIcon.png" VerticalAlignment="Center"/>
             <TextBlock Text="Μηδενισμός Άξονα &#10;Τερματικού κοπής" Foreground="White" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center"/>
           </Grid>
         </Button>
         <Button x:Name="ZeroThicBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,5,10,10" CornerRadius="10" Grid.Row="1">
           <Grid ColumnDefinitions="*,3*">
-            <Image Grid.Column="0" Source="avares://MetalShearsController/Assets/Images/buttonPlaceholderIcon.png" VerticalAlignment="Center"/>
+            <Image Grid.Column="0" Source="avares://MetalShearsController/Assets/Images/thicIcon.png" VerticalAlignment="Center"/>
             <TextBlock Text="Μηδενισμός &#10;Αξονα Πάχους" Foreground="White" Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center"/>
           </Grid>
         </Button>
       </Grid>
 
+
+
       <Grid x:Name="EtcControls" Grid.Row="1" Grid.Column="1" Margin="5,5,0,0">
-        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 2 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
         
       </Grid>
     </Grid>
+
+
+
 
     <DockPanel Height="24" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                Background="{Binding StatusColor}">
