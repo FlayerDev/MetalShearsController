@@ -12,7 +12,7 @@
 
     <Grid x:Name="InterfaceGrid" Margin="20,20,20,44" RowDefinitions="*,*" ColumnDefinitions="2*,*" >
 
-      <Grid x:Name="CuttingTerminalControl" Grid.Row="0" Margin="0,0,5,5" ColumnDefinitions="3*,*" RowDefinitions="4*,3*">
+      <Grid x:Name="CuttingTerminalControl" Grid.Row="0" Margin="0,0,5,5" ColumnDefinitions="3*,*" RowDefinitions="4*,2*">
         <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" CornerRadius="20" Grid.RowSpan="2" Grid.ColumnSpan="2" />
         <Grid x:Name="TermPosView">
           <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="LightGreen" Margin="10,10,5,5" CornerRadius="10" Padding="10">
@@ -27,37 +27,70 @@
           </Border>
         </Grid>
 
+        <Grid x:Name="SeqList" Grid.Column="1" Margin="5,10,10,5">
+          <ListBox ItemsSource="{Binding SavedItems}"
+                  SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                  SelectionMode="Single"
+                  FontSize="10"
+                  IsHitTestVisible="False"
+                  Background="#2d2c2b">
 
-        <Grid x:Name="IncrementBttnsControl" Grid.Column="0" Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*" Margin="10,5,5,10">
-          <Button Command="{Binding IncrementRequestedTeminalPositionCommand}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" CornerRadius="10,0,0,10" Grid.Column="0">
-             <TextBlock Text="-100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="1">
-             <TextBlock Text="-10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="2">
-             <TextBlock Text="-0.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>          
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="3">
-             <TextBlock Text="+0.5" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>          
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="4">
-             <TextBlock Text="+10" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>          
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" CornerRadius="0,10,10,0" Grid.Column="5">
-             <TextBlock Text="100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-          </Button>
+            <ListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="Foreground" Value="White" /> <!-- Adjust height as needed -->
+                <Setter Property="Height" Value="24" /> <!-- Adjust height as needed -->
+                <Setter Property="Padding" Value="2" /> <!-- Reduce item padding -->
+              </Style>
+              <Style Selector="ListBoxItem:selected">
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Background" Value="LightBlue" />
+              </Style>
+            </ListBox.Styles>
+
+          </ListBox>
         </Grid>
 
-        <Button x:Name="MoveTermBttn" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,10,10" CornerRadius="10" Grid.Column="1" Grid.Row="1">
+        <Grid x:Name="IncrementBttnsControl" Grid.Column="0" Grid.Row="1" ColumnDefinitions="*,*,*,*,3*" Margin="10,5,5,10">
+          <ToggleButton Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" CornerRadius="10,0,0,10" Grid.Column="0">
+             <TextBlock Text="Auto" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </ToggleButton>
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="1">
+             <TextBlock Text="M+" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="2">
+             <TextBlock Text="MC" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="3" CornerRadius="0,10,10,0">
+             <TextBlock Text="FW" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Button>
+
+          <NumericUpDown Grid.Column="4" Margin="10,0,5,0" TextAlignment="Center" CornerRadius="10" 
+          ShowButtonSpinner="False" Minimum="0" Value="0" FormatString="0000.0" VerticalAlignment="Center" Foreground="White"/>
+
+        </Grid>
+
+        <Button x:Name="MoveTermBttn" Command="{Binding MoveTermAxisCommand}" IsEnabled="{Binding EnableMoveTermBttn}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,5,10,10" CornerRadius="10" Grid.Column="1" Grid.Row="1">
           <TextBlock Text="ΜΕΤΑΦΟΡΑ" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Button>
       </Grid>
 
 
 
-      <Grid x:Name="BladeThicknessControl" Grid.Row="1" Margin="0,5,5,0">
-        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" CornerRadius="20"/>
+      <Grid x:Name="BladeThicknessControl" Grid.Row="1" Margin="0,5,5,0" ColumnDefinitions="2*,*">
+        <Border Background="#2d2c2b" BorderThickness="1" BoxShadow="2 2 10 1 Black" BorderBrush="#4d4c4b" Grid.ColumnSpan="2" CornerRadius="20"/>
+
+        <Grid x:Name="ThicknessSelectionToggles" RowDefinitions="*,*" ColumnDefinitions="*,*,*" Margin="10">
+          <ToggleButton HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#626160" CornerRadius="20" Margin="5"> 
+            <TextBlock Text="0.5mm" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </ToggleButton>
+          <ToggleButton HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#626160" CornerRadius="20" Margin="5" Grid.Column="1"> 
+            <TextBlock Text="1mm" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </ToggleButton>
+        </Grid>
+
+        <Grid Grid.Column="1">
+          
+        </Grid>
 
       </Grid>
 
