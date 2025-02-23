@@ -21,7 +21,7 @@
                 <TextBlock Text="Θέση τερματικού κοπής" Foreground="DarkGreen" FontWeight="DemiBold" HorizontalAlignment="Right" Grid.Row="0"/>
               </Viewbox>
               <Viewbox Stretch="Uniform" Grid.Row="1"  HorizontalAlignment="Left" Margin="5,0,0,0">
-                <TextBlock Text="{Binding RequestedTerminalPosition}" Grid.Row="1" Foreground="Green" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <TextBlock Text="{Binding TerminalPosition}" Grid.Row="1" Foreground="Green" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Left" />
               </Viewbox>
             </Grid>
           </Border>
@@ -54,18 +54,18 @@
           <ToggleButton Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" CornerRadius="10,0,0,10" Grid.Column="0">
              <TextBlock Text="Auto" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </ToggleButton>
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="1">
+          <Button Command="{Binding MemoryAddCommand}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="1">
              <TextBlock Text="M+" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Button>
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="2">
+          <Button Command="{Binding MemoryClearCommand}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="2">
              <TextBlock Text="MC" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Button>
           <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="3" CornerRadius="0,10,10,0">
              <TextBlock Text="FW" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Button>
 
-          <NumericUpDown Grid.Column="4" Margin="10,0,5,0" TextAlignment="Center" CornerRadius="10" 
-          ShowButtonSpinner="False" Minimum="0" Value="0" FormatString="0000.0" VerticalAlignment="Center" Foreground="White"/>
+          <NumericUpDown Value="{Binding RequestedTermPos, Mode=TwoWay}" Grid.Column="4" Margin="10,0,5,0" TextAlignment="Center" CornerRadius="10" 
+          ShowButtonSpinner="False" Minimum="0" FormatString="0000.0" VerticalAlignment="Center" Foreground="White"/>
 
         </Grid>
 

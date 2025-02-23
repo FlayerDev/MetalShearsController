@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics;
 using System.Windows.Input;
 using Avalonia.Controls.Documents;
+using MetalShearsController.Models;
 
 namespace MetalShearsController.ViewModels;
 
@@ -21,7 +22,9 @@ public partial class MainViewModel : ViewModelBase
     private string statusColor = "DimGray";
 
     [ObservableProperty]
-    private string requestedTerminalPosition = "0000.0mm";
+    private string terminalPosition = "0000.0mm";
+    [ObservableProperty]
+    private double? requestedTermPos = 0.0;
     [ObservableProperty]
     private bool enableMoveTermBttn = true;
     public ICommand MoveTermAxisCommand { get; }
@@ -30,13 +33,19 @@ public partial class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         MoveTermAxisCommand = new RelayCommand(MoveTermAxis);
-
+        MemoryAddCommand = new RelayCommand(MemoryAdd);
+        MemoryClearCommand = new RelayCommand(MemoryClear);
+        MemoryForwardCommand = new RelayCommand(MemoryForward);
     }
 
     #region MemoryList
     private int _selectedIndex = 1;
 
-    public ObservableCollection<string> SavedItems { get; } = new();
+    public ObservableCollection<PositionUnits> SavedItems { get; } = new();
+
+    public ICommand MemoryAddCommand { get; }
+    public ICommand MemoryClearCommand { get; }
+    public ICommand MemoryForwardCommand { get; }
 
     [ObservableProperty]
     public bool autoRotateTermPos = false;
@@ -50,13 +59,12 @@ public partial class MainViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    private void MemoryAdd()
-    {
+    private void MemoryAdd() { if (SavedItems.Count < 5) SavedItems.Add(new(RequestedTermPos ?? 0.0));}
+    private void MemoryClear() => SavedItems.Clear();
 
-    }
-    private void MemoryClear()
+    private void MemoryForward()
     {
-
+        
     }
 
     #endregion
@@ -64,6 +72,6 @@ public partial class MainViewModel : ViewModelBase
 
     private void MoveTermAxis()
     {
-
+        TerminalPosition = RequestedTermPos.ToString() + " mm";
     }
 }
