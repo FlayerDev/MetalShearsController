@@ -60,7 +60,7 @@
           <Button Command="{Binding MemoryClearCommand}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="2">
              <TextBlock Text="MC" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Button>
-          <Button Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="3" CornerRadius="0,10,10,0">
+          <Button Command="{Binding MemoryForwardCommand}" Background="#626160" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Grid.Column="3" CornerRadius="0,10,10,0">
              <TextBlock Text="FW" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Button>
 

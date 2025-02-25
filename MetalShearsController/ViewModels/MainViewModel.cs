@@ -13,6 +13,8 @@ namespace MetalShearsController.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    public StepperMotorService? TerminalMotorService;
+
 
     #region ObservableProperties&Commands
     [ObservableProperty]
@@ -39,7 +41,7 @@ public partial class MainViewModel : ViewModelBase
     }
 
     #region MemoryList
-    private int _selectedIndex = 1;
+    private int _selectedIndex = -1;
 
     public ObservableCollection<PositionUnits> SavedItems { get; } = new();
 
@@ -59,12 +61,21 @@ public partial class MainViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    private void MemoryAdd() { if (SavedItems.Count < 5) SavedItems.Add(new(RequestedTermPos ?? 0.0));}
+    private void MemoryAdd() { if (SavedItems.Count < 5) SavedItems.Add(new(RequestedTermPos ?? 0.0)); }
     private void MemoryClear() => SavedItems.Clear();
 
     private void MemoryForward()
     {
-        
+        if (SavedItems.Count < 2) return;
+        if (SelectedIndex == -1)
+        {
+            SelectedIndex = 0;
+        }
+        else if (SelectedIndex == SavedItems.Count - 1)
+        {
+            SelectedIndex = 0;
+        }
+        else SelectedIndex++;
     }
 
     #endregion
