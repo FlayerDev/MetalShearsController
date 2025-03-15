@@ -16,28 +16,50 @@ public partial class MainViewModel : ViewModelBase
     public StepperMotorService? TerminalMotorService;
 
 
+    private bool isSimulation = false;
+
     #region ObservableProperties&Commands
     [ObservableProperty]
     private string status = "Σύστημα Ανενεργό";
-
     [ObservableProperty]
     private string statusColor = "DimGray";
 
     [ObservableProperty]
-    private string terminalPosition = "0000.0mm";
+    private PositionUnits terminalPosition = new PositionUnits(0.0);
+    [ObservableProperty]
+    private int[] thicknessPresets = { 100, 200 };
+    private bool[] ToggledThicknessButtons;
     [ObservableProperty]
     private double? requestedTermPos = 0.0;
     [ObservableProperty]
     private bool enableMoveTermBttn = true;
     public ICommand MoveTermAxisCommand { get; }
+    public ICommand SetThicknessAxisCommand { get; }
+    public ICommand MoveThicknessAxisCommand { get; }
     #endregion
 
     public MainViewModel()
     {
+        try
+        {
+            TerminalMotorService = new(1, 2, 3);
+        }
+        catch
+        {
+            isSimulation = true;
+            Debug.Print("No GPIO System. Simulation only!");
+            //StatusColor = "Red";
+            Status = "Non GPIO System (Simulation Mode)";
+        }
+
         MoveTermAxisCommand = new RelayCommand(MoveTermAxis);
+        SetThicknessAxisCommand = new RelayCommand<string?>(SetThicknessFromPreset);
+        MoveThicknessAxisCommand = new RelayCommand(MoveToSetThickness);
         MemoryAddCommand = new RelayCommand(MemoryAdd);
         MemoryClearCommand = new RelayCommand(MemoryClear);
         MemoryForwardCommand = new RelayCommand(MemoryForward);
+
+        ToggledThicknessButtons = new bool[thicknessPresets.Length];
     }
 
     #region MemoryList
@@ -81,8 +103,31 @@ public partial class MainViewModel : ViewModelBase
     #endregion
 
 
+    #region UI Actions
+    private void SetThicknessFromPreset(string? preset)
+    {
+        int preset_index = int.Parse(preset ?? "0");
+        Debug.Print($"Set thickness to {preset}");
+
+    }
+
+    #endregion
+
+
+    #region Real Actions
     private void MoveTermAxis()
     {
-        TerminalPosition = RequestedTermPos.ToString() + " mm";
+        if (isSimulation)
+        {
+            TerminalPosition = new PositionUnits(RequestedTermPos ?? 0.0);
+            return;
+        }
+    }
+
+
+    private void MoveToSetThickness()
+    {
+
     }
 }
+#endregion
