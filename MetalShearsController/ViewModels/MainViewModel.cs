@@ -8,12 +8,21 @@ using System.Diagnostics;
 using System.Windows.Input;
 using Avalonia.Controls.Documents;
 using MetalShearsController.Models;
+using MetalShearsController.Controllers;
 
 namespace MetalShearsController.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    public StepperMotorService? TerminalMotorService;
+
+#region Constants
+
+
+    private const int THICKNESS_STEP_PIN = 0;
+    private const int THICKNESS_DIR_PIN = 0;    
+    private const int THICKNESS_ENABLE_PIN = 0;
+#endregion
+
 
 
     private bool isSimulation = false;
@@ -25,10 +34,10 @@ public partial class MainViewModel : ViewModelBase
     private string statusColor = "DimGray";
 
     [ObservableProperty]
-    private PositionUnits terminalPosition = new PositionUnits(0.0);
+    private PositionUnits terminalPosition = new(0.0);
     [ObservableProperty]
-    private int[] thicknessPresets = { 100, 200 };
-    private bool[] ToggledThicknessButtons;
+    private int[] thicknessPresets = [100, 200];
+    
     [ObservableProperty]
     private double? requestedTermPos = 0.0;
     [ObservableProperty]
@@ -42,7 +51,7 @@ public partial class MainViewModel : ViewModelBase
     {
         try
         {
-            TerminalMotorService = new(1, 2, 3);
+            TerminalController.Initialize();
         }
         catch
         {
@@ -59,7 +68,7 @@ public partial class MainViewModel : ViewModelBase
         MemoryClearCommand = new RelayCommand(MemoryClear);
         MemoryForwardCommand = new RelayCommand(MemoryForward);
 
-        ToggledThicknessButtons = new bool[thicknessPresets.Length];
+        TerminalController.PositionChanged += () => TerminalPosition = new(TerminalController.TerminalPosition);
     }
 
     #region MemoryList
@@ -119,9 +128,10 @@ public partial class MainViewModel : ViewModelBase
     {
         if (isSimulation)
         {
-            TerminalPosition = new PositionUnits(RequestedTermPos ?? 0.0);
+            TerminalController.SetPosition(new PositionUnits(RequestedTermPos ?? 0.0));
             return;
         }
+        TerminalController.Translate(new PositionUnits(RequestedTermPos ?? 0.0));
     }
 
 

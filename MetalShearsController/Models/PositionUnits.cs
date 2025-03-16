@@ -6,6 +6,7 @@ public class PositionUnits
 {
     private int _value = 0;
 
+    public int Units => _value;
     public double Value
     {
         get => _value / 10.0;
