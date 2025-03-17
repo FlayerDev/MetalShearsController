@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using MetalShearsController.Models;
+using MetalShearsController.Services;
 
 namespace MetalShearsController.Controllers;
 
@@ -12,8 +13,8 @@ public static class TerminalController
     private const int TERMINAL_DIR_PIN = 0;
     private const int TERMINAL_ENABLE_PIN = 0;
     private const int TERMINAL_UNITS_TO_STEPS = 0;
+    private const int TERMINA_MAX_SPEED_STEPS = 200;
     private const bool TERMINAL_INVERT_DIR = false;
-    private static readonly int[] TERMINAL_SPEEDS = {100,200,300};
 
     public static PositionUnits TerminalPosition = new PositionUnits(0.0);
 
@@ -30,7 +31,7 @@ public static class TerminalController
         bool dir = unitDifference > 0;
         if (TerminalMotorService != null)
         {
-            _ = TerminalMotorService.MoveStepperAsync(unitDifference * TERMINAL_UNITS_TO_STEPS, 0, TERMINAL_INVERT_DIR ? !dir : dir);
+            _ = TerminalMotorService.MoveStepperAsync(unitDifference * TERMINAL_UNITS_TO_STEPS, TERMINA_MAX_SPEED_STEPS, TERMINAL_INVERT_DIR ? !dir : dir);
         }
         else{
             Debug.Print("No Terminal Motor Service, Aborting Translation");

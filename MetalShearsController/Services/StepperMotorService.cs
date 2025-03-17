@@ -4,6 +4,8 @@ using System.Device.Pwm;
 using System.Threading;
 using System.Threading.Tasks;
 
+namespace MetalShearsController.Services;
+
 public class StepperMotorService : IDisposable
 {
     private readonly int _stepPin;      // GPIO for PUL+ (e.g., GPIO 18 for PWM0)
