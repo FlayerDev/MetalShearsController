@@ -53,12 +53,12 @@ public partial class MainViewModel : ViewModelBase
         {
             TerminalController.Initialize();
         }
-        catch
+        catch (Exception ex)
         {
             isSimulation = true;
             Debug.Print("No GPIO System. Simulation only!");
             //StatusColor = "Red";
-            Status = "Non GPIO System (Simulation Mode)";
+            Status = "Non GPIO System (Simulation Mode)  "+ ex.Message;
         }
 
         MoveTermAxisCommand = new RelayCommand(MoveTermAxis);

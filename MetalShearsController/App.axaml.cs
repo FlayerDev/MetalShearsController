@@ -6,6 +6,7 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 using MetalShearsController.ViewModels;
 using MetalShearsController.Views;
+using MetalShearsController.Controllers;
 
 namespace MetalShearsController;
 
@@ -27,6 +28,7 @@ public partial class App : Application
             {
                 DataContext = new MainViewModel()
             };
+            desktop.Exit += AppTerminationRoutine;
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
@@ -50,5 +52,10 @@ public partial class App : Application
         {
             BindingPlugins.DataValidators.Remove(plugin);
         }
+    }
+
+    private void AppTerminationRoutine(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        TerminalController.Kill();
     }
 }

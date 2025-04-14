@@ -28,6 +28,8 @@ public class StepperMotorService : IDisposable
         _gpio.OpenPin(_dirPin, PinMode.Output);
         _gpio.OpenPin(_enablePin, PinMode.Output);
 
+        _gpio.Write(_enablePin, PinValue.High);
+
         // Initialize PWM on the step pin (e.g., Channel 0 for GPIO 18)
         int pwmChannel = GetPwmChannelForPin(_stepPin);
         _pwm = PwmChannel.Create(0, pwmChannel, frequency: 100, dutyCyclePercentage: 0.5); // Start with 100 Hz, 50% duty cycle
@@ -43,6 +45,7 @@ public class StepperMotorService : IDisposable
     // - clockwise: Direction of rotation
     public async Task<int> MoveStepperAsync(int steps, int maxSpeedHz, bool clockwise)
     {
+        LogService.Log($"Moving stepper motor: {steps} steps at {maxSpeedHz} Hz, direction: {(clockwise ? "CW" : "CCW")}");
         CancellationToken cancellationToken = _cancellationTokenSource.Token;
         int stepsCompleted = 0; // Tracks steps sent (open-loop)
 
@@ -113,6 +116,7 @@ public class StepperMotorService : IDisposable
             _gpio.Write(_enablePin, PinValue.High); // Disable motor
         }
 
+        LogService.Log($"Stepper motor move completed: {stepsCompleted} steps sent");
         return stepsCompleted; // Return total steps sent (may differ from 'steps' if cancelled)
     }
 
@@ -124,6 +128,7 @@ public class StepperMotorService : IDisposable
     // Returns steps completed during the ramp
     private async Task<int> RampSpeedAsync(int startHz, int endHz, int rampSteps, int updateMs, CancellationToken cancellationToken)
     {
+        LogService.Log($"Ramping speed: {startHz} Hz to {endHz} Hz over {rampSteps} steps");
         int stepsCompleted = 0;
         int stepsPerUpdate = rampSteps / (1000 / updateMs); // Steps per update (e.g., 5 steps every 10ms over 1sec)
         if (stepsPerUpdate < 1) stepsPerUpdate = 1; // Minimum 1 step per update
@@ -152,7 +157,7 @@ public class StepperMotorService : IDisposable
             await Task.Delay(remainingMs, cancellationToken);
             stepsCompleted += remainingSteps;
         }
-
+        LogService.Log($"Ramp completed: {stepsCompleted} steps");
         return stepsCompleted;
     }
 
@@ -175,6 +180,7 @@ public class StepperMotorService : IDisposable
         _pwm.Dispose();
         _gpio.Dispose();
         _cancellationTokenSource.Dispose();
+        LogService.Log("StepperMotorService disposed");
     }
 
     // Maps GPIO pin to PWM channel (Raspberry Pi 5 compatible)
