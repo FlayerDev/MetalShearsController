@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Avalonia.Controls.Documents;
 using MetalShearsController.Models;
 using MetalShearsController.Controllers;
+using MetalShearsController.Services;
 
 namespace MetalShearsController.ViewModels;
 
@@ -32,6 +33,10 @@ public partial class MainViewModel : ViewModelBase
     private string status = "Σύστημα Ανενεργό";
     [ObservableProperty]
     private string statusColor = "DimGray";
+    [ObservableProperty]
+    private string logText = "Empty Log"; 
+    [ObservableProperty]
+    private Avalonia.Vector logScrollOffset = new(0,0);
 
     [ObservableProperty]
     private PositionUnits terminalPosition = new(0.0);
@@ -56,7 +61,7 @@ public partial class MainViewModel : ViewModelBase
         catch (Exception ex)
         {
             isSimulation = true;
-            Debug.Print("No GPIO System. Simulation only!");
+            LogService.Log("No GPIO System. Simulation only!");
             //StatusColor = "Red";
             Status = "Non GPIO System (Simulation Mode)  "+ ex.Message;
         }
@@ -69,6 +74,10 @@ public partial class MainViewModel : ViewModelBase
         MemoryForwardCommand = new RelayCommand(MemoryForward);
 
         TerminalController.PositionChanged += () => TerminalPosition = new(TerminalController.TerminalPosition);
+        LogService.LogUpdated += () => {
+            LogText = LogService.LogBuffer;
+            LogScrollOffset += new Avalonia.Vector(0,12);
+            };
     }
 
     #region MemoryList
@@ -116,7 +125,7 @@ public partial class MainViewModel : ViewModelBase
     private void SetThicknessFromPreset(string? preset)
     {
         int preset_index = int.Parse(preset ?? "0");
-        Debug.Print($"Set thickness to {preset}");
+        LogService.Log($"Set thickness to {preset}");
 
     }
 
@@ -129,6 +138,7 @@ public partial class MainViewModel : ViewModelBase
         if (isSimulation)
         {
             TerminalController.SetPosition(new PositionUnits(RequestedTermPos ?? 0.0));
+            LogService.Log($"Simulated Terminal Position Set to {RequestedTermPos}");
             return;
         }
         TerminalController.Translate(new PositionUnits(RequestedTermPos ?? 0.0));

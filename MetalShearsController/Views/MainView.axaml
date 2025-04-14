@@ -166,7 +166,10 @@
 
       <Grid x:Name="EtcControls" Grid.Row="1" Grid.Column="1" Margin="5,5,0,0">
         <Border Background="#2d2c2b" BorderBrush="#4d4c4b" BorderThickness="1" BoxShadow="2 2 10 1 Black" CornerRadius="20" />
-
+        <ScrollViewer Offset="{Binding LogScrollOffset}" Margin="10,10,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto"
+                HorizontalScrollBarVisibility="Disabled" Name="LogScrollViewer">
+          <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="8" Text="{Binding LogText}" TextWrapping="Wrap" />
+        </ScrollViewer>
       </Grid>
     </Grid>
 
